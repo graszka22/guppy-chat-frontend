@@ -1,0 +1,23 @@
+.LoginPage {
+    text-align: center;
+    height: 100vh;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    background: rgb(13,89,190);
+    background: linear-gradient(0deg, rgba(13,89,190,1) 0%, rgba(16,144,203,1) 35%, rgba(0,170,204,1) 100%);
+  }
+  
+  .LoginPage h1 {
+    color: white;
+    font-size: 8rem;
+  }
+  
+  .LoginPage h2 {
+    color: white;
+    font-size: 2rem;
+  }
+  
+  .logincontainer {
+    margin: 50px;
+  }

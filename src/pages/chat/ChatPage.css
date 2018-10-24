@@ -1,0 +1,17 @@
+.ChatPage {
+    display: flex;
+    flex: 1;
+}
+
+.ChatPage .ContactsContainer {
+    display: flex;
+    flex: 0.3;
+    border-width: 0 1px 0 0;
+    border-color: rgba(34, 36, 38, 0.15);
+    border-style: solid;
+}
+
+.ChatPage .ChatAreaContainer {
+    display: flex;
+    flex: 0.7;
+}

@@ -1,0 +1,17 @@
+.Contacts {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.Contacts .Header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    padding: 10px;
+}
+
+.Contacts .bullet {
+    color: green;
+}

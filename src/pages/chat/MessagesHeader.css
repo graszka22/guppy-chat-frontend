@@ -1,0 +1,17 @@
+.MessagesHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-width: 1px 0 1px 0;
+    border-color: rgba(34, 36, 38, 0.15);
+    border-style: solid;
+    padding: 10px;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+.MessagesHeader .Avatar {
+    margin-right: 10px;
+}

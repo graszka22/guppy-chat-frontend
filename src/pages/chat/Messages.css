@@ -1,0 +1,41 @@
+.Messages {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.Messages > * {
+    flex-shrink: 0; 
+}
+
+.Messages .MessageText {
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    max-width: 500px;
+}
+
+.Messages .Message {
+    display: flex;
+}
+
+.Messages .Message.me {
+    align-self: flex-end;
+}
+
+.Messages .Message.other {
+
+}
+
+.Messages .MessageText.me {
+    background-color: aquamarine;
+}
+
+.Messages .MessageText.other {
+    background-color: lightgrey;
+}
+
+.Message .Avatar {
+    margin: 10px;
+}
