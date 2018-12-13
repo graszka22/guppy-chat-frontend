@@ -1,0 +1,1 @@
+export const WEBSOCKET_ADDRESS = "ws://localhost:7070/chat";
