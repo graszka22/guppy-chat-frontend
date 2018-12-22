@@ -11,6 +11,11 @@ class ChatArea extends Component {
         message: "",
     };
 
+    constructor(props) {
+        super(props);
+        props.getMessages();
+    }
+
     onChange = (ev, data) => {
         this.setState({ message: data.value })
     }
@@ -46,6 +51,7 @@ class ChatArea extends Component {
 
 const mapDispatchToProps = dispatch => ({
     sendMessage: (message) => dispatch(actionCreator.sendMessage(message)),
+    getMessages: () => dispatch(actionCreator.getMessages()),
 });
 
 export default connect(null, mapDispatchToProps)(ChatArea);

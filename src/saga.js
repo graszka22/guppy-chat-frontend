@@ -58,8 +58,16 @@ function* handleReceiveMessage({ data }) {
     });
 }
 
+function* handleGetMessagesResponse({ messages }) {
+    yield put({
+        type: actionType.GET_MESSAGES_SUCCESS,
+        messages,
+    });
+}
+
 const websocketMessagesHandlers = {
     RECEIVE_MESSAGE: handleReceiveMessage,
+    GET_MESSAGES_RESPONSE: handleGetMessagesResponse,
 };
 
 function* handleWebsocketMessage({ data }) {
@@ -86,12 +94,27 @@ function* watchSendMessage() {
     yield takeEvery(actionType.SEND_MESSAGE, handleSendMessage);
 }
 
+function* handleGetMessages({ friendId }) {
+    yield put({
+        type: actionType.SEND_TO_WEBSOCKET,
+        data: {
+            userId: 7,
+            friendId: 8,
+        },
+        command: "GET_MESSAGES",
+    });
+}
+
+function* watchGetMessages() {
+    yield takeEvery(actionType.GET_MESSAGES, handleGetMessages);
+}
+
 export default function* saga() {
 
     yield all([
         fork(watchWebsocketConnect),
         fork(watchWebsocketMessage),
         fork(watchSendMessage),
-        //fork(watchReceiveMessageSaga),
+        fork(watchGetMessages),
     ]);
 };

@@ -5,6 +5,7 @@ export const actionType = {
     SEND_TO_WEBSOCKET: "SEND_TO_WEBSOCKET",
     WEBSOCKET_MESSAGE: "WEBSOCKET_MESSAGE",
     GET_MESSAGES: "GET_MESSAGES",
+    GET_MESSAGES_SUCCESS: "GET_MESSAGES_SUCCESS",
     SEND_MESSAGE: "SEND_MESSAGE",
     RECEIVE_MESSAGE: "RECEIVE_MESSAGE",
 };
@@ -13,16 +14,6 @@ export const actionType = {
 const initialState = {
     messages: [
         // map user -> array of messages with the user, loading state
-        {
-            senderId: 7,
-            receiverId: 8,
-            text: "raz raz"
-        },
-        {
-            senderId: 8,
-            receiverId: 7,
-            text: "dwa dwa",
-        },
     ],
     friends: [
         {
@@ -74,30 +65,29 @@ const handlers = {
             action.message,
         ],
     }),
+    [actionType.GET_MESSAGES]: (state) => ({
+        ...state,
+        loadingMessages: true,
+    }),
+    [actionType.GET_MESSAGES_SUCCESS]: (state, action) => ({
+        ...state,
+        messages: action.messages,
+        loadingMessages: false,
+    }),
 };
 
 export const actionCreator = {
     connectToWebsocket: () => ({
         type: actionType.WEBSOCKET_CONNECT,
     }),
-    getMessages() {
-        return {
-            type: actionType.GET_MESSAGES,
-        }
-    },
-    sendMessage(message) {
-        return {
-            type: actionType.SEND_MESSAGE,
-            message
-        }
-    },
-    sendToWebsocket(command, data) {
-        return {
-            type: actionType.SEND_TO_WEBSOCKET,
-            data,
-            command
-        };
-    },
+    sendMessage: (message) => ({
+        type: actionType.SEND_MESSAGE,
+        message
+    }),
+    getMessages: (friendId) => ({
+        type: actionType.GET_MESSAGES,
+        friendId,
+    }),
 };
 
 export default function reducer(state=initialState, action) {

@@ -20,7 +20,6 @@ class Messages extends Component {
     }
 
     render() {
-        console.log(this.props.messages);
         return (
             <div className="Messages" ref={this.ref}>
                 {

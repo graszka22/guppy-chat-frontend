@@ -13,14 +13,18 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <ChatPage />
+        {this.props.websocketConnected && <ChatPage />}
       </div>
     );
   }
 }
 
+const mapStateToProps = state => ({
+  websocketConnected: state.connected,
+})
+
 const mapDispatchToProps = dispatch => ({
   connectToWebsocket: () => dispatch(actionCreator.connectToWebsocket()),
 });
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
