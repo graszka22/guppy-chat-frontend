@@ -1,6 +1,6 @@
 .ChatPage {
+    height: 100vh;
     display: flex;
-    flex: 1;
 }
 
 .ChatPage .ContactsContainer {

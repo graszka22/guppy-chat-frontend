@@ -1,30 +1,12 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import './App.css';
+import React from 'react';
 import ChatPage from './pages/chat/ChatPage';
-import { actionCreator } from './reducers';
+import LoginPage from './pages/login/LoginPage';
+import { createSwitchNavigator } from "@react-navigation/core";
+import { createBrowserApp } from "@react-navigation/web";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    props.connectToWebsocket();
-  }
-
-  render() {
-    return (
-      <div className="App">
-        {this.props.websocketConnected && <ChatPage />}
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = state => ({
-  websocketConnected: state.connected,
-})
-
-const mapDispatchToProps = dispatch => ({
-  connectToWebsocket: () => dispatch(actionCreator.connectToWebsocket()),
+const Navigator = createSwitchNavigator({
+  Login: LoginPage,
+  Chat: ChatPage,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default createBrowserApp(Navigator);

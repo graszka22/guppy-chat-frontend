@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './ChatPage.css';
 import Contacts from './Contacts';
 import ChatArea from './ChatArea';
+import { actionCreator } from '../../reducers';
 
 class ChatPage extends Component {
+  constructor(props) {
+    super(props);
+    props.connectToWebsocket();
+  }
+
   render() {
+    if(!this.props.websocketConnected) return null;
     return (
       <div className="ChatPage">
          <div className="ContactsContainer">
@@ -18,4 +26,12 @@ class ChatPage extends Component {
   }
 }
 
-export default ChatPage;
+const mapStateToProps = state => ({
+  websocketConnected: state.connected,
+})
+
+const mapDispatchToProps = dispatch => ({
+  connectToWebsocket: () => dispatch(actionCreator.connectToWebsocket()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatPage);

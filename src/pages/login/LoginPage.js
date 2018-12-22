@@ -3,6 +3,10 @@ import { Grid, Segment, Container, Header, Form, Divider } from 'semantic-ui-rea
 import './LoginPage.css';
 
 class LoginPage extends Component {
+  onLoginClick = () => {
+    this.props.navigation.navigate('Chat');
+  }
+
   render() {
     return (
       <div className="LoginPage">
@@ -18,7 +22,14 @@ class LoginPage extends Component {
             <Header as="h3">Log in</Header>
             <Form.Input placeholder='Username or email...' />
             <Form.Input placeholder='Password...' type='password' />
-            <Form.Button basic content='Login' color='blue'  icon='right arrow' labelPosition='right' />
+            <Form.Button
+              basic
+              content='Login'
+              color='blue'
+              icon='right arrow'
+              labelPosition='right'
+              onClick={this.onLoginClick}
+            />
           </Form>
           </Grid.Column>
           <Grid.Column>
