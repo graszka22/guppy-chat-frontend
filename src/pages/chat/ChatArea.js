@@ -1,10 +1,27 @@
 import React, { Component } from 'react';
-import { Input, Divider, TextArea } from 'semantic-ui-react';
+import { TextArea } from 'semantic-ui-react';
+import { connect } from 'react-redux';
 import './ChatArea.css';
 import Messages from './Messages';
 import MessagesHeader from './MessagesHeader';
+import { actionCreator } from '../../reducers';
 
 class ChatArea extends Component {
+    state = {
+        message: "",
+    };
+
+    onChange = (ev, data) => {
+        this.setState({ message: data.value })
+    }
+
+    onKeyUp = (ev) => {
+        if (ev.keyCode === 13 && !ev.shiftKey) {
+            this.props.sendMessage(this.state.message);
+            this.setState({ message: "" });
+        }
+    }
+
     render() {
         const { userName, userAvatar } = this.props;
         return (
@@ -12,11 +29,23 @@ class ChatArea extends Component {
                 <MessagesHeader userName={userName} userAvatar={userAvatar} />
                 <Messages />
                 <div className="MessageInput">
-                    <TextArea transparent placeholder='Type a message...' autoHeight className="TextArea" />
+                    <TextArea
+                        transparent
+                        placeholder='Type a message...'
+                        autoHeight
+                        className="TextArea"
+                        onChange={this.onChange}
+                        onKeyUp={this.onKeyUp}
+                        value={this.state.message}
+                    />
                 </div>
             </div>
         );
     }
 }
 
-export default ChatArea;
+const mapDispatchToProps = dispatch => ({
+    sendMessage: (message) => dispatch(actionCreator.sendMessage(message)),
+});
+
+export default connect(null, mapDispatchToProps)(ChatArea);

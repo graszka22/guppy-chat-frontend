@@ -73,6 +73,16 @@ const initialState = {
 
 const handlers = {
     [actionType.WEBSOCKET_CONNECT_SUCCESS]: state => ({ ...state, connected: true }),
+    [actionType.SEND_MESSAGE]: (state, action) => ({
+        ...state,
+        messages: [
+            ...state.messages,
+            {
+                content: action.message,
+                user: "me",
+            },
+        ],
+    }),
 };
 
 export const actionCreator = {
@@ -84,10 +94,18 @@ export const actionCreator = {
             type: actionType.GET_MESSAGES,
         }
     },
-    sendMessage() {
+    sendMessage(message) {
         return {
             type: actionType.SEND_MESSAGE,
+            message
         }
+    },
+    sendToWebsocket(command, data) {
+        return {
+            type: actionType.SEND_TO_WEBSOCKET,
+            data,
+            command
+        };
     },
 };
 

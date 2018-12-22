@@ -5,6 +5,11 @@ import ChatPage from './pages/chat/ChatPage';
 import { actionCreator } from './reducers';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    props.connectToWebsocket();
+  }
+
   render() {
     return (
       <div className="App">
