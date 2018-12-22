@@ -1,7 +1,7 @@
 import { all, fork, takeEvery, take, put, call, race } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import { actionType } from './reducers';
-import { WEBSOCKET_ADDRESS } from './config';
+import { WEBSOCKET_ADDRESS, SERVER_ADDRESS } from './config';
 
 function* watchWebsocketInput(socket) {
     while(true) {
@@ -109,12 +109,41 @@ function* watchGetMessages() {
     yield takeEvery(actionType.GET_MESSAGES, handleGetMessages);
 }
 
-export default function* saga() {
+function* handleLogin({ username, password }) {
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('password', password);
+    console.log(username, password);
+    const response = yield fetch(`${SERVER_ADDRESS}/login`, {
+        method: 'POST',
+        body: formData,
+    });
+    const token = yield response.text();
+    yield put({
+        type: actionType.LOGIN_SUCCESS,
+        token,
+    });
+}
 
+function* watchLogin() {
+    yield takeEvery(actionType.LOGIN, handleLogin);
+}
+
+function* handleRegister({ username, email, password }) {
+
+}
+
+function* watchRegister() {
+    yield takeEvery(actionType.REGISTER, handleRegister);
+}
+
+export default function* saga() {
     yield all([
         fork(watchWebsocketConnect),
         fork(watchWebsocketMessage),
         fork(watchSendMessage),
         fork(watchGetMessages),
+        fork(watchLogin),
+        fork(watchRegister),
     ]);
 };

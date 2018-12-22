@@ -8,6 +8,10 @@ export const actionType = {
     GET_MESSAGES_SUCCESS: "GET_MESSAGES_SUCCESS",
     SEND_MESSAGE: "SEND_MESSAGE",
     RECEIVE_MESSAGE: "RECEIVE_MESSAGE",
+    LOGIN: "LOGIN",
+    LOGIN_SUCCESS: "LOGIN_SUCCESS",
+    REGISTER: "REGISTER",
+    REGISTER_SUCESS: "REGISTER_SUCCESS",
 };
 
 
@@ -74,6 +78,13 @@ const handlers = {
         messages: action.messages,
         loadingMessages: false,
     }),
+    [actionType.LOGIN_SUCCESS]: (state, action) => ({
+        ...state,
+        userToken: action.token,
+    }),
+    [actionType.REGISTER_SUCESS]: (state, action) => ({
+
+    }),
 };
 
 export const actionCreator = {
@@ -87,6 +98,17 @@ export const actionCreator = {
     getMessages: (friendId) => ({
         type: actionType.GET_MESSAGES,
         friendId,
+    }),
+    login: (username, password) => ({
+        type: actionType.LOGIN,
+        username,
+        password,
+    }),
+    register: (username, email, password) => ({
+        type: actionType.REGISTER,
+        username, 
+        email,
+        password,
     }),
 };
 

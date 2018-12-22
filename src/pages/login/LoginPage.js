@@ -1,10 +1,36 @@
 import React, { Component } from 'react';
 import { Grid, Segment, Container, Header, Form, Divider } from 'semantic-ui-react';
+import { connect } from 'react-redux';
 import './LoginPage.css';
+import { actionCreator } from '../../reducers';
 
 class LoginPage extends Component {
+  state = {
+    loginUsername: "", 
+    loginPassword: "",
+  };
+
+  componentDidUpdate(prevProps) {
+    if(!prevProps.userToken && this.props.userToken) {
+      this.props.navigation.navigate('Chat');
+    }
+  }
+
+  onLoginUsernameChange = (ev, data) => {
+    this.setState({
+      loginUsername: data.value,
+    });
+  }
+
+  onLoginPasswordChange = (ev, data) => {
+    this.setState({
+      loginPassword: data.value,
+    });
+  }
+
   onLoginClick = () => {
-    this.props.navigation.navigate('Chat');
+    const { loginUsername, loginPassword } = this.state;
+    this.props.login(loginUsername, loginPassword);
   }
 
   render() {
@@ -20,8 +46,8 @@ class LoginPage extends Component {
         <Grid.Column>
           <Form>
             <Header as="h3">Log in</Header>
-            <Form.Input placeholder='Username or email...' />
-            <Form.Input placeholder='Password...' type='password' />
+            <Form.Input placeholder='Username or email...' onChange={this.onLoginUsernameChange} />
+            <Form.Input placeholder='Password...' type='password' onChange={this.onLoginPasswordChange} />
             <Form.Button
               basic
               content='Login'
@@ -52,4 +78,12 @@ class LoginPage extends Component {
   }
 }
 
-export default LoginPage;
+const mapStateToProps = state => ({
+  userToken: state.userToken,
+});
+
+const mapDispatchToProps = dispatch => ({
+  login: (login, password) => dispatch(actionCreator.login(login, password)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
