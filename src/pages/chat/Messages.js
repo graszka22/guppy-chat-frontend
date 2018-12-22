@@ -20,15 +20,16 @@ class Messages extends Component {
     }
 
     render() {
+        console.log(this.props.messages);
         return (
             <div className="Messages" ref={this.ref}>
                 {
                     this.props.messages.map(message => {
-                            const type = message.user === "me" ? "me" : "other";
+                            const type = message.senderId === 7 ? "me" : "other";
                             return (
                                 <div className={`Message ${type}`}>
                                     <Image src={message.avatar} avatar className="Avatar" />
-                                    <p className={`MessageText ${type}`}>{message.content}</p>
+                                    <p className={`MessageText ${type}`}>{message.text}</p>
                                 </div>
                             );
                         }

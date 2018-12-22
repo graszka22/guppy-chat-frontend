@@ -23,7 +23,7 @@ function* watchWebsocketOutput(channel) {
 function makeWebsocketChannel(socket) {
     return eventChannel((emitter) => {
         socket.onopen = e => emitter({ type: actionType.WEBSOCKET_CONNECT_SUCCESS });
-        socket.onmessage = e => emitter({ type: actionType.WEBSOCKET_MESSAGE, data: e.data });
+        socket.onmessage = e => emitter({ type: actionType.WEBSOCKET_MESSAGE, data: JSON.parse(e.data) });
         socket.onerror = e => console.log(e);
         return () => {
             socket.close();
@@ -51,8 +51,19 @@ function* watchWebsocketConnect() {
     yield takeEvery(actionType.WEBSOCKET_CONNECT, websocketConnect);
 }
 
-function handleWebsocketMessage({ data }) {
-    console.log(data);
+function* handleReceiveMessage({ data }) {
+    yield put({
+        type: actionType.RECEIVE_MESSAGE,
+        message: data,
+    });
+}
+
+const websocketMessagesHandlers = {
+    RECEIVE_MESSAGE: handleReceiveMessage,
+};
+
+function* handleWebsocketMessage({ data }) {
+    yield call(websocketMessagesHandlers[data.command], data);
 }
 
 function* watchWebsocketMessage() {
