@@ -5,7 +5,7 @@ import './ChatArea.css';
 import Messages from './Messages';
 import MessagesHeader from './MessagesHeader';
 import { actionCreator } from '../../reducers';
-
+import { getUserDataById } from '../../selectors';
 class ChatArea extends Component {
     state = {
         message: "",
@@ -13,7 +13,7 @@ class ChatArea extends Component {
 
     constructor(props) {
         super(props);
-        props.getMessages();
+        props.getMessages(props.userId);
     }
 
     onChange = (ev, data) => {
@@ -22,16 +22,17 @@ class ChatArea extends Component {
 
     onKeyUp = (ev) => {
         if (ev.keyCode === 13 && !ev.shiftKey) {
-            this.props.sendMessage(this.state.message);
+            this.props.sendMessage(this.state.message, this.props.userId);
             this.setState({ message: "" });
         }
     }
 
     render() {
-        const { userName, userAvatar } = this.props;
+        const { friend, friendsLoaded } = this.props;
+        if(!friendsLoaded) return null;
         return (
             <div className="ChatArea">
-                <MessagesHeader userName={userName} userAvatar={userAvatar} />
+                <MessagesHeader userName={friend.username} />
                 <Messages />
                 <div className="MessageInput">
                     <TextArea
@@ -49,9 +50,16 @@ class ChatArea extends Component {
     }
 }
 
+const mapStateToProps = (state, props) => {
+    return ({
+        friend: getUserDataById(state, props.userId),
+        friendsLoaded: state.friendsLoaded,
+    });
+}
+
 const mapDispatchToProps = dispatch => ({
-    sendMessage: (message) => dispatch(actionCreator.sendMessage(message)),
-    getMessages: () => dispatch(actionCreator.getMessages()),
+    sendMessage: (message, receiverId) => dispatch(actionCreator.sendMessage(message, receiverId)),
+    getMessages: (friendId) => dispatch(actionCreator.getMessages(friendId)),
 });
 
-export default connect(null, mapDispatchToProps)(ChatArea);
+export default connect(mapStateToProps, mapDispatchToProps)(ChatArea);

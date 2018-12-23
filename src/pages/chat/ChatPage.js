@@ -11,16 +11,24 @@ class ChatPage extends Component {
     props.connectToWebsocket();
   }
 
+  state = {
+    currentUserId: null,
+  }
+
+  onContactSelected = userId => this.setState({ currentUserId: userId });
+
   render() {
     if(!this.props.websocketConnected) return null;
     return (
       <div className="ChatPage">
          <div className="ContactsContainer">
-           <Contacts />
+           <Contacts onContactSelected={this.onContactSelected}/>
         </div>
-        <div className="ChatAreaContainer">
-          <ChatArea userName="Aldebrand Alayna" userAvatar="https://picsum.photos/100/100/?random" />
-        </div>
+        { this.state.currentUserId &&
+          <div className="ChatAreaContainer">
+            <ChatArea userId={this.state.currentUserId} />
+          </div>
+        }
       </div>
     );
   }

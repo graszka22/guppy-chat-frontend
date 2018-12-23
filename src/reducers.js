@@ -12,6 +12,8 @@ export const actionType = {
     LOGIN_SUCCESS: "LOGIN_SUCCESS",
     REGISTER: "REGISTER",
     REGISTER_SUCESS: "REGISTER_SUCCESS",
+    FETCH_FRIENDS: "FETCH_FRIENDS",
+    FETCH_FRIENDS_SUCCESS: "FETCH_FRIENDS_SUCCESS",
 };
 
 
@@ -19,33 +21,9 @@ const initialState = {
     messages: [
         // map user -> array of messages with the user, loading state
     ],
-    friends: [
-        {
-            id: 8,
-            name: 'Aldebrand Alayna',
-            status: 'Active now',
-            activeNow: true,
-            avatar: 'https://picsum.photos/100/100/?random',
-        },
-        {
-            name: 'Margarit Corrine',
-            status: 'Active 6h ago',
-            activeNow: false,
-            avatar: 'https://picsum.photos/100/100/?random',
-        },
-        {
-            name: 'Klavdiya Margrét',
-            status: 'Active 20 minutes ago',
-            activeNow: false,
-            avatar: 'https://picsum.photos/100/100/?random',
-        },
-        {
-            name: 'Klara Felix',
-            status: 'Active now',
-            activeNow: true,
-            avatar: 'https://picsum.photos/100/100/?random',
-        },
-    ],
+    friends: {
+
+    },
     connected: false,
 };
 
@@ -58,7 +36,7 @@ const handlers = {
             {
                 text: action.message,
                 senderId: state.userId,
-                receiverId: 8,
+                receiverId: action.receiverId,
             },
         ],
     }),
@@ -86,15 +64,24 @@ const handlers = {
     [actionType.REGISTER_SUCESS]: (state, action) => ({
 
     }),
+    [actionType.FETCH_FRIENDS_SUCCESS]: (state, action) => ({
+        ...state,
+        friends: action.friends.reduce((res, it) => {
+            res[it.userId] = it;
+            return res;
+        }, {}),
+        friendsLoaded: true,
+    }),
 };
 
 export const actionCreator = {
     connectToWebsocket: () => ({
         type: actionType.WEBSOCKET_CONNECT,
     }),
-    sendMessage: (message) => ({
+    sendMessage: (message, receiverId) => ({
         type: actionType.SEND_MESSAGE,
-        message
+        message,
+        receiverId
     }),
     getMessages: (friendId) => ({
         type: actionType.GET_MESSAGES,
@@ -110,6 +97,9 @@ export const actionCreator = {
         username, 
         email,
         password,
+    }),
+    fetchFriends: () => ({
+        type: actionType.FETCH_FRIENDS,
     }),
 };
 

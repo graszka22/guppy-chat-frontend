@@ -66,9 +66,17 @@ function* handleGetMessagesResponse({ messages }) {
     });
 }
 
+function* handleGetFriendsResponse({ friends }) {
+    yield put({
+        type: actionType.FETCH_FRIENDS_SUCCESS,
+        friends,
+    });
+}
+
 const websocketMessagesHandlers = {
     RECEIVE_MESSAGE: handleReceiveMessage,
     GET_MESSAGES_RESPONSE: handleGetMessagesResponse,
+    GET_FRIENDS_RESPONSE: handleGetFriendsResponse,
 };
 
 function* handleWebsocketMessage({ data }) {
@@ -79,13 +87,13 @@ function* watchWebsocketMessage() {
     yield takeEvery(actionType.WEBSOCKET_MESSAGE, handleWebsocketMessage);
 }
 
-function* handleSendMessage({ message }) {
+function* handleSendMessage({ message, receiverId }) {
     const userId = yield select(userIdSelector);
     yield put({
         type: actionType.SEND_TO_WEBSOCKET,
         data: {
             userId,
-            to: 8,
+            to: receiverId,
             message,
         },
         command: "SEND_MESSAGE"
@@ -102,7 +110,7 @@ function* handleGetMessages({ friendId }) {
         type: actionType.SEND_TO_WEBSOCKET,
         data: {
             userId,
-            friendId: 8,
+            friendId,
         },
         command: "GET_MESSAGES",
     });
@@ -140,6 +148,21 @@ function* watchRegister() {
     yield takeEvery(actionType.REGISTER, handleRegister);
 }
 
+function* handleFetchFriends() {
+    const userId = yield select(userIdSelector);
+    yield put({
+        type: actionType.SEND_TO_WEBSOCKET,
+        data: {
+            userId,
+        },
+        command: "GET_FRIENDS",
+    });
+}
+
+function* watchFetchFriends() {
+    yield takeEvery(actionType.FETCH_FRIENDS, handleFetchFriends);
+}
+
 export default function* saga() {
     yield all([
         fork(watchWebsocketConnect),
@@ -148,5 +171,6 @@ export default function* saga() {
         fork(watchGetMessages),
         fork(watchLogin),
         fork(watchRegister),
+        fork(watchFetchFriends),
     ]);
 };
