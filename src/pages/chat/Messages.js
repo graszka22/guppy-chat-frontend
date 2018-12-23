@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import './Messages.css';
+import { userIdSelector } from '../../selectors';
 
 class Messages extends Component {
     constructor(props) {
@@ -24,7 +25,7 @@ class Messages extends Component {
             <div className="Messages" ref={this.ref}>
                 {
                     this.props.messages.map(message => {
-                            const type = message.senderId === 7 ? "me" : "other";
+                            const type = message.senderId === this.props.userId ? "me" : "other";
                             return (
                                 <div className={`Message ${type}`}>
                                     <Image src={message.avatar} avatar className="Avatar" />
@@ -41,6 +42,7 @@ class Messages extends Component {
 
 const mapStateToProps = state => ({
     messages: state.messages,
+    userId: userIdSelector(state),
 });
 
 export default connect(mapStateToProps)(Messages);

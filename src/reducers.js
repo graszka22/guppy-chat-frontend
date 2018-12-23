@@ -57,7 +57,7 @@ const handlers = {
             ...state.messages,
             {
                 text: action.message,
-                senderId: 7,
+                senderId: state.userId,
                 receiverId: 8,
             },
         ],
@@ -81,6 +81,7 @@ const handlers = {
     [actionType.LOGIN_SUCCESS]: (state, action) => ({
         ...state,
         userToken: action.token,
+        userId: action.userId,
     }),
     [actionType.REGISTER_SUCESS]: (state, action) => ({
 

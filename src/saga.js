@@ -1,12 +1,13 @@
-import { all, fork, takeEvery, take, put, call, race } from 'redux-saga/effects';
+import { all, fork, takeEvery, take, put, call, race, select } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import { actionType } from './reducers';
 import { WEBSOCKET_ADDRESS, SERVER_ADDRESS } from './config';
+import { userTokenSelector, userIdSelector } from './selectors';
 
 function* watchWebsocketInput(socket) {
     while(true) {
         const { data, command } = yield take(actionType.SEND_TO_WEBSOCKET);
-        const token = "7cc762d72861b5a32d51f4227a47b8f6";
+        const token = yield select(userTokenSelector);
         socket.send(JSON.stringify({
             data, command, token
         }));
@@ -79,10 +80,11 @@ function* watchWebsocketMessage() {
 }
 
 function* handleSendMessage({ message }) {
+    const userId = yield select(userIdSelector);
     yield put({
         type: actionType.SEND_TO_WEBSOCKET,
         data: {
-            userId: 7,
+            userId,
             to: 8,
             message,
         },
@@ -95,10 +97,11 @@ function* watchSendMessage() {
 }
 
 function* handleGetMessages({ friendId }) {
+    const userId = yield select(userIdSelector);
     yield put({
         type: actionType.SEND_TO_WEBSOCKET,
         data: {
-            userId: 7,
+            userId,
             friendId: 8,
         },
         command: "GET_MESSAGES",
@@ -113,15 +116,15 @@ function* handleLogin({ username, password }) {
     const formData = new FormData();
     formData.append('username', username);
     formData.append('password', password);
-    console.log(username, password);
     const response = yield fetch(`${SERVER_ADDRESS}/login`, {
         method: 'POST',
         body: formData,
     });
-    const token = yield response.text();
+    const { token, userId } = yield response.json();
     yield put({
         type: actionType.LOGIN_SUCCESS,
         token,
+        userId
     });
 }
 
