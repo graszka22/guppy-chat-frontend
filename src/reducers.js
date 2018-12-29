@@ -14,6 +14,8 @@ export const actionType = {
     REGISTER_SUCESS: "REGISTER_SUCCESS",
     FETCH_FRIENDS: "FETCH_FRIENDS",
     FETCH_FRIENDS_SUCCESS: "FETCH_FRIENDS_SUCCESS",
+    SEARCH_FRIENDS: "SEARCH_FRIENDS",
+    SEARCH_FRIENDS_SUCCESS: "SEARCH_FRIENDS_SUCCESS",
 };
 
 
@@ -23,6 +25,10 @@ const initialState = {
     ],
     friends: {
 
+    },
+    searchFriends: {
+        results: [],
+        loading: false,
     },
     connected: false,
 };
@@ -72,6 +78,20 @@ const handlers = {
         }, {}),
         friendsLoaded: true,
     }),
+    [actionType.SEARCH_FRIENDS]: (state, action) => ({
+        ...state,
+        searchFriends: {
+            ...state.searchFriends,
+            loading: true,
+        }
+    }),
+    [actionType.SEARCH_FRIENDS_SUCCESS]: (state, action) => ({
+        ...state,
+        searchFriends: {
+            results: action.results,
+            loading: false,
+        }
+    }),
 };
 
 export const actionCreator = {
@@ -100,6 +120,10 @@ export const actionCreator = {
     }),
     fetchFriends: () => ({
         type: actionType.FETCH_FRIENDS,
+    }),
+    searchFriends: searchPhrase => ({
+        type: actionType.SEARCH_FRIENDS,
+        searchPhrase,
     }),
 };
 

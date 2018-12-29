@@ -73,10 +73,18 @@ function* handleGetFriendsResponse({ friends }) {
     });
 }
 
+function* handleSearchFriendsResponse({ results }) {
+    yield put({
+        type: actionType.SEARCH_FRIENDS_SUCCESS,
+        results,
+    });
+}
+
 const websocketMessagesHandlers = {
     RECEIVE_MESSAGE: handleReceiveMessage,
     GET_MESSAGES_RESPONSE: handleGetMessagesResponse,
     GET_FRIENDS_RESPONSE: handleGetFriendsResponse,
+    SEARCH_FRIENDS_RESPONSE: handleSearchFriendsResponse,
 };
 
 function* handleWebsocketMessage({ data }) {
@@ -176,6 +184,20 @@ function* watchFetchFriends() {
     yield takeEvery(actionType.FETCH_FRIENDS, handleFetchFriends);
 }
 
+function* handleSearchFriends({ searchPhrase }) {
+    yield put({
+        type: actionType.SEND_TO_WEBSOCKET,
+        data: {
+            searchPhrase,
+        },
+        command: "SEARCH_FRIENDS",
+    });
+}
+
+function* watchSearchFriends() {
+    yield takeEvery(actionType.SEARCH_FRIENDS, handleSearchFriends);
+}
+
 export default function* saga() {
     yield all([
         fork(watchWebsocketConnect),
@@ -185,5 +207,6 @@ export default function* saga() {
         fork(watchLogin),
         fork(watchRegister),
         fork(watchFetchFriends),
+        fork(watchSearchFriends),
     ]);
 };
