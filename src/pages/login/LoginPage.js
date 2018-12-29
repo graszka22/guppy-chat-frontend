@@ -8,6 +8,10 @@ class LoginPage extends Component {
   state = {
     loginUsername: "", 
     loginPassword: "",
+    registerUsername: "",
+    registerEmail: "",
+    registerPassword: "",
+    registerRepeatPassword: "",
   };
 
   componentDidUpdate(prevProps) {
@@ -28,9 +32,22 @@ class LoginPage extends Component {
     });
   }
 
+  onRegisterUsernameChange = (ev, data) => this.setState({ registerUsername: data.value });
+
+  onRegisterEmailChange = (ev, data) => this.setState({ registerEmail: data.value });
+
+  onRegisterPasswordChange = (ev, data) => this.setState({ registerPassword: data.value });
+
+  onRegisterRepeatPassword = (ev, data) => this.setState({ registerRepeatPassword: data.value });
+
   onLoginClick = () => {
     const { loginUsername, loginPassword } = this.state;
     this.props.login(loginUsername, loginPassword);
+  }
+
+  onRegisterClick = () => {
+    const { registerEmail, registerPassword, registerUsername } = this.state;
+    this.props.register(registerUsername, registerEmail, registerPassword);
   }
 
   render() {
@@ -61,11 +78,18 @@ class LoginPage extends Component {
           <Grid.Column>
           <Form>
             <Header as="h3">Register a new account</Header>
-            <Form.Input placeholder='Username...' />
-            <Form.Input placeholder='E-mail address...' />
-            <Form.Input placeholder='Password...' type='password' />
-            <Form.Input placeholder='Repeat password...' type='password' />
-            <Form.Button basic content='Register' color='blue'  icon='right arrow' labelPosition='right' />
+            <Form.Input placeholder='Username...' onChange={this.onRegisterUsernameChange} />
+            <Form.Input placeholder='E-mail address...' onChange={this.onRegisterEmailChange} />
+            <Form.Input placeholder='Password...' type='password' onChange={this.onRegisterPasswordChange} />
+            <Form.Input placeholder='Repeat password...' type='password' onChange={this.onRegisterRepeatPassword} />
+            <Form.Button
+              basic
+              content='Register'
+              color='blue'
+              icon='right arrow'
+              labelPosition='right'
+              onClick={this.onRegisterClick}
+            />
           </Form>
           </Grid.Column>
           </Grid.Row>
@@ -84,6 +108,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   login: (login, password) => dispatch(actionCreator.login(login, password)),
+  register: (login, email, password) => dispatch(actionCreator.register(login, email, password)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

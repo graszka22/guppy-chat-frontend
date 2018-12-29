@@ -141,7 +141,20 @@ function* watchLogin() {
 }
 
 function* handleRegister({ username, email, password }) {
-
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('email', email);
+    formData.append('password', password);
+    const response = yield fetch(`${SERVER_ADDRESS}/register`, {
+        method: 'POST',
+        body: formData,
+    });
+    const { token, userId } = yield response.json();
+    yield put({
+        type: actionType.LOGIN_SUCCESS,
+        token,
+        userId
+    });
 }
 
 function* watchRegister() {
