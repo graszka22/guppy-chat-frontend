@@ -19,6 +19,7 @@ const reduxDevTools =
 const persistConfig = {
   key: 'root',
   storage,
+  whitelist: ['userToken', 'userId']
 }
 
 const persistedReducer = persistReducer(persistConfig, reducer)
