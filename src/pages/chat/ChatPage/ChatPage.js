@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import './ChatPage.css';
-import Contacts from './Contacts';
-import ChatArea from './ChatArea';
-import { actionCreator } from '../../reducers';
+import { actionCreator } from '../../../reducers';
+import ChatPageView from './ChatPageView';
 
 class ChatPage extends Component {
   constructor(props) {
@@ -18,18 +16,14 @@ class ChatPage extends Component {
   onContactSelected = userId => this.setState({ currentUserId: userId });
 
   render() {
-    if(!this.props.websocketConnected) return null;
+    const { websocketConnected } = this.props;
+    const { currentUserId } = this.state;
+    if(!websocketConnected) return null;
     return (
-      <div className="ChatPage">
-         <div className="ContactsContainer">
-           <Contacts onContactSelected={this.onContactSelected}/>
-        </div>
-        { this.state.currentUserId &&
-          <div className="ChatAreaContainer">
-            <ChatArea userId={this.state.currentUserId} />
-          </div>
-        }
-      </div>
+      <ChatPageView
+        onContactSelected={this.onContactSelected}
+        currentUserId={currentUserId}
+      />
     );
   }
 }

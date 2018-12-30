@@ -1,5 +1,4 @@
-import React from 'react';
-import ChatPage from './pages/chat/ChatPage';
+import ChatPage from './pages/chat/ChatPage/ChatPage';
 import LoginPage from './pages/login/LoginPage';
 import { createSwitchNavigator } from "@react-navigation/core";
 import { createBrowserApp } from "@react-navigation/web";

@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { TextArea } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import './ChatArea.css';
-import Messages from './Messages';
-import MessagesHeader from './MessagesHeader';
-import { actionCreator } from '../../reducers';
-import { getUserDataById } from '../../selectors';
+import { actionCreator } from '../../../reducers';
+import { getUserDataById } from '../../../selectors';
+import ChatAreaView from './ChatAreaView';
+
 class ChatArea extends Component {
     state = {
         message: "",
@@ -16,11 +14,11 @@ class ChatArea extends Component {
         props.getMessages(props.userId);
     }
 
-    onChange = (ev, data) => {
+    onMessageChange = (ev, data) => {
         this.setState({ message: data.value })
     }
 
-    onKeyUp = (ev) => {
+    onMessageKeyUp = (ev) => {
         if (ev.keyCode === 13 && !ev.shiftKey) {
             this.props.sendMessage(this.state.message, this.props.userId);
             this.setState({ message: "" });
@@ -29,23 +27,16 @@ class ChatArea extends Component {
 
     render() {
         const { friend, friendsLoaded } = this.props;
+        const { message } = this.state;
         if(!friendsLoaded) return null;
         return (
-            <div className="ChatArea">
-                <MessagesHeader userName={friend.username} />
-                <Messages />
-                <div className="MessageInput">
-                    <TextArea
-                        transparent
-                        placeholder='Type a message...'
-                        autoHeight
-                        className="TextArea"
-                        onChange={this.onChange}
-                        onKeyUp={this.onKeyUp}
-                        value={this.state.message}
-                    />
-                </div>
-            </div>
+            <ChatAreaView
+                friendsLoaded={friendsLoaded}
+                friendUsername={friend.username}
+                onMessageChange={this.onMessageChange}
+                onMessageKeyUp={this.onMessageKeyUp}
+                messageValue={message}
+            />
         );
     }
 }
