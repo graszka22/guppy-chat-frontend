@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { userIdSelector } from '../../../selectors';
+import MessagesView from './MessagesView';
 
 class Messages extends Component {
     constructor(props) {
@@ -9,7 +10,8 @@ class Messages extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        this.scrollToBottom();
+        if(this.ref && prevProps.messages !== this.props.messages)
+            this.scrollToBottom();
     }
 
     scrollToBottom = () => {
@@ -21,10 +23,10 @@ class Messages extends Component {
     render() {
         const { messages, userId } = this.props;
         return (
-            <Messages
+            <MessagesView
                 messages={messages}
                 userId={userId}
-                ref={this.ref}
+                messagesRef={this.ref}
             />
         );
     }

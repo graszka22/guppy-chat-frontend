@@ -3,9 +3,9 @@ import { Image } from 'semantic-ui-react';
 import './Messages.css';
 
 const MessagesView = ({
-    ref, messages, userId,
+    messagesRef, messages, userId,
 }) => (
-    <div className="Messages" ref={ref}>
+    <div className="Messages" ref={messagesRef}>
         {
             messages.map(message => {
                     const type = message.senderId === userId ? "me" : "other";

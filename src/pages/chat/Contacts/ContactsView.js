@@ -3,7 +3,7 @@ import { List, Image, Search } from 'semantic-ui-react'
 import './Contacts.css';
 
 const ContactsView = ({
-    isFetchingSearch, onSearchChange, searchResults, searchValue, users
+    isFetchingSearch, onSearchChange, searchResults, searchValue, users, onContactSelected
 }) => (
     <div className="Contacts">
         <div className="Header">
@@ -17,7 +17,7 @@ const ContactsView = ({
         </div>
         <List celled selection size="big">
             {Object.values(users).map(user => (
-                <List.Item onClick={() => this.props.onContactSelected(user.userId)}>
+                <List.Item onClick={() => onContactSelected(user.userId)}>
                     <Image avatar src={user.avatar} />
                     <List.Content>
                     <List.Header>{user.username}{user.activeNow && <span className="bullet"> •</span>}</List.Header>

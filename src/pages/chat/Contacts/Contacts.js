@@ -20,7 +20,7 @@ class Contacts extends Component {
     }
 
     render() {
-        const { friendsLoaded, isFetchingSearch, users } = this.props;
+        const { friendsLoaded, isFetchingSearch, users, onContactSelected } = this.props;
         const { searchValue } = this.state;
         const searchResults = this.props.searchResults.map(username => ({ title: username }));
         if(!friendsLoaded) return null;
@@ -31,6 +31,7 @@ class Contacts extends Component {
                 onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
                 searchValue={searchValue}
                 searchResults={searchResults}
+                onContactSelected={onContactSelected}
             />
         );
     }
