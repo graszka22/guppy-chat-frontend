@@ -13,12 +13,6 @@ class LoginPage extends Component {
     registerRepeatPassword: "",
   };
 
-  componentDidUpdate(prevProps) {
-    if(!prevProps.userToken && this.props.userToken) {
-      this.props.navigation.navigate('Chat');
-    }
-  }
-
   onLoginUsernameChange = (ev, data) => {
     this.setState({
       loginUsername: data.value,
@@ -75,13 +69,9 @@ class LoginPage extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  userToken: state.userToken,
-});
-
 const mapDispatchToProps = dispatch => ({
   login: (login, password) => dispatch(actionCreator.login(login, password)),
   register: (login, email, password) => dispatch(actionCreator.register(login, email, password)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(null, mapDispatchToProps)(LoginPage);

@@ -16,6 +16,8 @@ export const actionType = {
     FETCH_FRIENDS_SUCCESS: "FETCH_FRIENDS_SUCCESS",
     SEARCH_FRIENDS: "SEARCH_FRIENDS",
     SEARCH_FRIENDS_SUCCESS: "SEARCH_FRIENDS_SUCCESS",
+    LOGOUT: "LOGOUT",
+    LOGOUT_SUCCESS: "LOGOUT_SUCCESS",
 };
 
 
@@ -92,6 +94,7 @@ const handlers = {
             loading: false,
         }
     }),
+    [actionType.LOGOUT_SUCCESS]: () => initialState,
 };
 
 export const actionCreator = {
@@ -124,6 +127,9 @@ export const actionCreator = {
     searchFriends: searchPhrase => ({
         type: actionType.SEARCH_FRIENDS,
         searchPhrase,
+    }),
+    logout: () => ({
+        type: actionType.LOGOUT,
     }),
 };
 

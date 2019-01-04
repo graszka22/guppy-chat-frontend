@@ -1,13 +1,19 @@
 import React from 'react';
 import { List, Image, Search } from 'semantic-ui-react'
 import './Contacts.css';
+import LogoutButton from '../LogoutButton/LogoutButton';
 
 const ContactsView = ({
-    isFetchingSearch, onSearchChange, searchResults, searchValue, users, onContactSelected
+    isFetchingSearch, onSearchChange, searchResults, searchValue, users, onContactSelected,
 }) => (
     <div className="Contacts">
         <div className="Header">
-            <h1>GuppyChat</h1>
+            <div className="Title">
+                <h1>GuppyChat</h1>
+                <div className="LogOutIcon">
+                    <LogoutButton />
+                </div>
+            </div>
             <Search
                 loading={isFetchingSearch}
                 onSearchChange={onSearchChange}

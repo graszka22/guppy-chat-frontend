@@ -15,3 +15,13 @@
 .Contacts .bullet {
     color: green;
 }
+
+.Contacts .Title {
+    position: relative;
+}
+
+.Contacts .LogOutIcon {
+    position: absolute;
+    top: 0;
+    right: 0;
+}

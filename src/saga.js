@@ -3,6 +3,7 @@ import { eventChannel } from 'redux-saga';
 import { actionType } from './reducers';
 import { WEBSOCKET_ADDRESS, SERVER_ADDRESS } from './config';
 import { userTokenSelector, userIdSelector } from './selectors';
+import { navigate } from './Navigation';
 
 function* watchWebsocketInput(socket) {
     while(true) {
@@ -80,11 +81,19 @@ function* handleSearchFriendsResponse({ results }) {
     });
 }
 
+function* handleLogoutResponse() {
+    yield put({
+        type: actionType.LOGOUT_SUCCESS,
+    });
+    navigate('Login');
+}
+
 const websocketMessagesHandlers = {
     RECEIVE_MESSAGE: handleReceiveMessage,
     GET_MESSAGES_RESPONSE: handleGetMessagesResponse,
     GET_FRIENDS_RESPONSE: handleGetFriendsResponse,
     SEARCH_FRIENDS_RESPONSE: handleSearchFriendsResponse,
+    LOGOUT_RESPONSE: handleLogoutResponse,
 };
 
 function* handleWebsocketMessage({ data }) {
@@ -142,6 +151,7 @@ function* handleLogin({ username, password }) {
         token,
         userId
     });
+    navigate('Chat');
 }
 
 function* watchLogin() {
@@ -198,6 +208,18 @@ function* watchSearchFriends() {
     yield takeEvery(actionType.SEARCH_FRIENDS, handleSearchFriends);
 }
 
+function* handleLogout() {
+    yield put({
+        type: actionType.SEND_TO_WEBSOCKET,
+        data: {},
+        command: "LOGOUT",
+    });
+}
+
+function* watchLogout() {
+    yield takeEvery(actionType.LOGOUT, handleLogout);
+}
+
 export default function* saga() {
     yield all([
         fork(watchWebsocketConnect),
@@ -208,5 +230,6 @@ export default function* saga() {
         fork(watchRegister),
         fork(watchFetchFriends),
         fork(watchSearchFriends),
+        fork(watchLogout),
     ]);
 };
