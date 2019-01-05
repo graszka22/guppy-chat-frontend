@@ -15,6 +15,13 @@ class ChatPage extends Component {
 
   onContactSelected = userId => this.setState({ currentUserId: userId });
 
+  componentDidUpdate = () => {
+    const users = Object.keys(this.props.users);
+    if(this.state.currentUserId === null && users.length) {
+      this.setState({ currentUserId: users[0]})
+    }
+  }
+
   render() {
     const { websocketConnected } = this.props;
     const { currentUserId } = this.state;
@@ -29,6 +36,7 @@ class ChatPage extends Component {
 }
 
 const mapStateToProps = state => ({
+  users: state.friends,
   websocketConnected: state.connected,
 })
 
