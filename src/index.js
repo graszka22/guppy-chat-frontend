@@ -24,9 +24,11 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, reducer)
 
+const appliedSaga = applyMiddleware(sagaMiddleware);
+
 let store = createStore(
   persistedReducer,
-    compose(applyMiddleware(sagaMiddleware), reduxDevTools)
+  reduxDevTools ? compose(appliedSaga, reduxDevTools) : appliedSaga,
 );
 
 let persistor = persistStore(store)

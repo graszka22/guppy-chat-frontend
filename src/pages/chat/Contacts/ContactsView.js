@@ -1,10 +1,11 @@
 import React from 'react';
-import { List, Image, Search } from 'semantic-ui-react'
+import { List, Image } from 'semantic-ui-react'
 import './Contacts.css';
 import LogoutButton from '../LogoutButton/LogoutButton';
+import FriendsSearch from '../FriendsSearch/FriendsSearch';
 
 const ContactsView = ({
-    isFetchingSearch, onSearchChange, searchResults, searchValue, users, onContactSelected,
+    users, onContactSelected,
 }) => (
     <div className="Contacts">
         <div className="Header">
@@ -14,12 +15,7 @@ const ContactsView = ({
                     <LogoutButton />
                 </div>
             </div>
-            <Search
-                loading={isFetchingSearch}
-                onSearchChange={onSearchChange}
-                results={searchResults}
-                value={searchValue}
-            />
+            <FriendsSearch />
         </div>
         <List celled selection size="big">
             {Object.values(users).map(user => (

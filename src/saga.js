@@ -88,12 +88,21 @@ function* handleLogoutResponse() {
     navigate('Login');
 }
 
+function* handleAddFriendResponse({ friendId, friendUsername }) {
+    yield put({
+        type: actionType.ADD_FRIEND_SUCCESS,
+        friendId,
+        friendUsername,
+    });
+}
+
 const websocketMessagesHandlers = {
     RECEIVE_MESSAGE: handleReceiveMessage,
     GET_MESSAGES_RESPONSE: handleGetMessagesResponse,
     GET_FRIENDS_RESPONSE: handleGetFriendsResponse,
     SEARCH_FRIENDS_RESPONSE: handleSearchFriendsResponse,
     LOGOUT_RESPONSE: handleLogoutResponse,
+    ADD_FRIEND_RESPONSE: handleAddFriendResponse,
 };
 
 function* handleWebsocketMessage({ data }) {
@@ -220,6 +229,20 @@ function* watchLogout() {
     yield takeEvery(actionType.LOGOUT, handleLogout);
 }
 
+function* handleAddFriend({ friendId }) {
+    yield put({
+        type: actionType.SEND_TO_WEBSOCKET,
+        data: {
+            friendId,
+        },
+        command: "ADD_FRIEND",
+    })
+}
+
+function* watchAddFriend() {
+    yield takeEvery(actionType.ADD_FRIEND, handleAddFriend);
+}
+
 export default function* saga() {
     yield all([
         fork(watchWebsocketConnect),
@@ -231,5 +254,6 @@ export default function* saga() {
         fork(watchFetchFriends),
         fork(watchSearchFriends),
         fork(watchLogout),
+        fork(watchAddFriend),
     ]);
 };

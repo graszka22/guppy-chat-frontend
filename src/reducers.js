@@ -18,6 +18,8 @@ export const actionType = {
     SEARCH_FRIENDS_SUCCESS: "SEARCH_FRIENDS_SUCCESS",
     LOGOUT: "LOGOUT",
     LOGOUT_SUCCESS: "LOGOUT_SUCCESS",
+    ADD_FRIEND: "ADD_FRIEND",
+    ADD_FRIEND_SUCCESS: "ADD_FRIEND_SUCCESS",
 };
 
 
@@ -69,9 +71,6 @@ const handlers = {
         userToken: action.token,
         userId: action.userId,
     }),
-    [actionType.REGISTER_SUCESS]: (state, action) => ({
-
-    }),
     [actionType.FETCH_FRIENDS_SUCCESS]: (state, action) => ({
         ...state,
         friends: action.friends.reduce((res, it) => {
@@ -80,7 +79,7 @@ const handlers = {
         }, {}),
         friendsLoaded: true,
     }),
-    [actionType.SEARCH_FRIENDS]: (state, action) => ({
+    [actionType.SEARCH_FRIENDS]: (state) => ({
         ...state,
         searchFriends: {
             ...state.searchFriends,
@@ -95,6 +94,16 @@ const handlers = {
         }
     }),
     [actionType.LOGOUT_SUCCESS]: () => initialState,
+    [actionType.ADD_FRIEND_SUCCESS]: (state, action) =>({
+        ...state,
+        friends: {
+            ...state.friends,
+            [action.friendId]: {
+                userId: action.friendId,
+                username: action.friendUsername,
+            }
+        }
+    }),
 };
 
 export const actionCreator = {
@@ -130,6 +139,10 @@ export const actionCreator = {
     }),
     logout: () => ({
         type: actionType.LOGOUT,
+    }),
+    addFriend: friendId => ({
+        type: actionType.ADD_FRIEND,
+        friendId,
     }),
 };
 
