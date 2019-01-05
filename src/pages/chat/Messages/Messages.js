@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { userIdSelector } from '../../../selectors';
+import { userIdSelector, messagesSelector, isLoadingMessagesSelector } from '../../../selectors';
 import MessagesView from './MessagesView';
 
 class Messages extends Component {
@@ -32,8 +32,9 @@ class Messages extends Component {
     }
 };
 
-const mapStateToProps = state => ({
-    messages: state.messages,
+const mapStateToProps = (state, props) => ({
+    messages: messagesSelector(state, props.friendId),
+    loading: isLoadingMessagesSelector(state, props.friendId),
     userId: userIdSelector(state),
 });
 

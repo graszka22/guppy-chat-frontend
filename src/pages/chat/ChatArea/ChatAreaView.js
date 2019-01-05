@@ -5,11 +5,11 @@ import Messages from '../Messages/Messages';
 import MessagesHeader from '../MessagesHeader/MessagesHeader';
 
 const ChatAreaView = ({
-    friendUsername, onMessageChange, onMessageKeyUp, messageValue,
+    friendUsername, onMessageChange, onMessageKeyUp, messageValue, friendId,
 }) => (
     <div className="ChatArea">
         <MessagesHeader userName={friendUsername} />
-        <Messages />
+        <Messages friendId={friendId} />
         <div className="MessageInput">
             <TextArea
                 transparent

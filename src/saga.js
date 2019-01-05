@@ -60,10 +60,11 @@ function* handleReceiveMessage({ data }) {
     });
 }
 
-function* handleGetMessagesResponse({ messages }) {
+function* handleGetMessagesResponse({ messages, friendId }) {
     yield put({
         type: actionType.GET_MESSAGES_SUCCESS,
         messages,
+        friendId,
     });
 }
 

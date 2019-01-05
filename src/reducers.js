@@ -24,9 +24,9 @@ export const actionType = {
 
 
 const initialState = {
-    messages: [
+    messages: {
         // map user -> array of messages with the user, loading state
-    ],
+    },
     friends: {
 
     },
@@ -41,30 +41,53 @@ const handlers = {
     [actionType.WEBSOCKET_CONNECT_SUCCESS]: state => ({ ...state, connected: true }),
     [actionType.SEND_MESSAGE]: (state, action) => ({
         ...state,
-        messages: [
+        messages: {
             ...state.messages,
-            {
-                text: action.message,
-                senderId: state.userId,
-                receiverId: action.receiverId,
+            [action.receiverId]: {
+                ...state.messages[action.receiverId],
+                messages: [
+                    ...state.messages[action.receiverId].messages,
+                    {
+                        text: action.message,
+                        senderId: state.userId,
+                        receiverId: action.receiverId,
+                    },
+                ],
             },
-        ],
+        },
     }),
     [actionType.RECEIVE_MESSAGE]: (state, action) => ({
         ...state,
-        messages: [
+        messages: {
             ...state.messages,
-            action.message,
-        ],
+            [action.userId]: {
+                ...state.messages[action.userId],
+                messages: [
+                    ...state.messages[action.userId].messages,
+                    action.message,
+                ],
+            },
+        },
     }),
-    [actionType.GET_MESSAGES]: (state) => ({
+    [actionType.GET_MESSAGES]: (state, action) => ({
         ...state,
-        loadingMessages: true,
+        messages: {
+            ...state.messages,
+            [action.friendId]: {
+                ...state.messages[action.friendId],
+                loading: true,
+            },
+        },
     }),
     [actionType.GET_MESSAGES_SUCCESS]: (state, action) => ({
         ...state,
-        messages: action.messages,
-        loadingMessages: false,
+        messages: {
+            ...state.messages,
+            [action.friendId]: {
+                messages: action.messages,
+                loading: false,
+            },
+        },
     }),
     [actionType.LOGIN_SUCCESS]: (state, action) => ({
         ...state,

@@ -13,7 +13,7 @@ const ChatPageView = ({
         </div>
         { currentUserId &&
           <div className="ChatAreaContainer">
-            <ChatArea userId={currentUserId} />
+            <ChatArea friendId={currentUserId} />
           </div>
         }
       </div>

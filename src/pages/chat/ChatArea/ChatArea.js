@@ -11,7 +11,7 @@ class ChatArea extends Component {
 
     constructor(props) {
         super(props);
-        props.getMessages(props.userId);
+        props.getMessages(props.friendId);
     }
 
     onMessageChange = (ev, data) => {
@@ -20,13 +20,13 @@ class ChatArea extends Component {
 
     onMessageKeyUp = (ev) => {
         if (ev.keyCode === 13 && !ev.shiftKey) {
-            this.props.sendMessage(this.state.message, this.props.userId);
+            this.props.sendMessage(this.state.message, this.props.friendId);
             this.setState({ message: "" });
         }
     }
 
     render() {
-        const { friend, friendsLoaded } = this.props;
+        const { friend, friendsLoaded, friendId } = this.props;
         const { message } = this.state;
         if(!friendsLoaded) return null;
         return (
@@ -36,6 +36,7 @@ class ChatArea extends Component {
                 onMessageChange={this.onMessageChange}
                 onMessageKeyUp={this.onMessageKeyUp}
                 messageValue={message}
+                friendId={friendId}
             />
         );
     }
@@ -43,7 +44,7 @@ class ChatArea extends Component {
 
 const mapStateToProps = (state, props) => {
     return ({
-        friend: getUserDataById(state, props.userId),
+        friend: getUserDataById(state, props.friendId),
         friendsLoaded: state.friendsLoaded,
     });
 }
