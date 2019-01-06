@@ -2,7 +2,7 @@ import { all, fork, takeEvery, take, put, call, race, select } from 'redux-saga/
 import { eventChannel } from 'redux-saga';
 import { actionType } from './reducers';
 import { WEBSOCKET_ADDRESS, SERVER_ADDRESS } from './config';
-import { userTokenSelector, userIdSelector } from './selectors';
+import { userTokenSelector, userIdSelector, minMessageIdSelector } from './selectors';
 import { navigate } from './Navigation';
 
 function* watchWebsocketInput(socket) {
@@ -133,11 +133,13 @@ function* watchSendMessage() {
 
 function* handleGetMessages({ friendId }) {
     const userId = yield select(userIdSelector);
+    const minMessageId = yield select(minMessageIdSelector, friendId);
     yield put({
         type: actionType.SEND_TO_WEBSOCKET,
         data: {
             userId,
             friendId,
+            minMessageId,
         },
         command: "GET_MESSAGES",
     });

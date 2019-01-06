@@ -16,3 +16,9 @@ export const isLoadingMessagesSelector = (state, friendId) => {
         return state.messages[friendId].loading;
     return true;
 }
+
+export const minMessageIdSelector = (state, friendId) => {
+    if (state.messages[friendId])
+        return state.messages[friendId].minMessageId || -1;
+    return -1;
+}

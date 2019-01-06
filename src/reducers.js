@@ -79,16 +79,19 @@ const handlers = {
             },
         },
     }),
-    [actionType.GET_MESSAGES_SUCCESS]: (state, action) => ({
+    [actionType.GET_MESSAGES_SUCCESS]: (state, action) => {
+        const newMin = Math.min(...action.messages.map(message => message.messageId));
+        return ({
         ...state,
         messages: {
             ...state.messages,
             [action.friendId]: {
-                messages: action.messages,
+                messages: [...action.messages.reverse(), ...(state.messages[action.friendId].messages || [])],
+                minMessageId: isFinite(newMin) ? newMin : state.messages[action.friendId].minMessageId,
                 loading: false,
             },
         },
-    }),
+    })},
     [actionType.LOGIN_SUCCESS]: (state, action) => ({
         ...state,
         userToken: action.token,

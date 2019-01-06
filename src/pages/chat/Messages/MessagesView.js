@@ -1,11 +1,12 @@
 import React from 'react';
-import { Image } from 'semantic-ui-react';
+import { Image, Loader } from 'semantic-ui-react';
 import './Messages.css';
 
 const MessagesView = ({
-    messagesRef, messages, userId,
+    messagesRef, messages, userId, loading, onScroll
 }) => (
-    <div className="Messages" ref={messagesRef}>
+    <div className="Messages" ref={messagesRef} onScroll={onScroll}>
+        <Loader active={loading} />
         {
             messages.map(message => {
                     const type = message.senderId === userId ? "me" : "other";

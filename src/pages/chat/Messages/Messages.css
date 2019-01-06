@@ -3,6 +3,7 @@
     flex: 1;
     flex-direction: column;
     overflow: auto;
+    position: relative;
 }
 
 .Messages > * {
@@ -38,4 +39,11 @@
 
 .Message .Avatar {
     margin: 10px;
+}
+
+.Messages .loader {
+    position: absolute;
+    top: 0;
+    transform: none;
+    margin-top: 5px;
 }
