@@ -12,15 +12,26 @@ class Messages extends Component {
         props.getMessages(props.friendId);
     }
 
-    componentDidUpdate(prevProps) {
+    componentWillUpdate(nextProps) {
         if (!this.ref) return;
-        if (prevProps.messages !== this.props.messages) {
-            if (prevProps.messages.length === 0 || this.isAtBottom()) {
-                this.scrollToBottom();
+        if (nextProps.messages !== this.props.messages) {
+            this.historyChanged = true;
+            if (this.props.messages.length === 0 || this.isAtBottom()) {
+                this.shouldScrollToBottom = true;
                 return;
             }
-            ReactDOM.findDOMNode(this.ref.current.childNodes[10]).scrollIntoView();
+            this.shouldScrollToBottom = false;
+        } else {
+            this.historyChanged = false;
         }
+    }
+
+    componentDidUpdate() {
+        if(!this.historyChanged) return;
+        if(this.shouldScrollToBottom)
+            this.scrollToBottom();
+        else
+            ReactDOM.findDOMNode(this.ref.current.childNodes[10]).scrollIntoView();
     }
 
     isAtBottom = () => {
