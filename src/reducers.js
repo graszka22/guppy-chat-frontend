@@ -56,15 +56,15 @@ const handlers = {
             },
         },
     }),
-    [actionType.RECEIVE_MESSAGE]: (state, action) => ({
+    [actionType.RECEIVE_MESSAGE]: (state, { message }) => ({
         ...state,
         messages: {
             ...state.messages,
-            [action.userId]: {
-                ...state.messages[action.userId],
+            [message.senderId]: {
+                ...state.messages[message.senderId],
                 messages: [
-                    ...state.messages[action.userId].messages,
-                    action.message,
+                    ...state.messages[message.senderId].messages,
+                    message,
                 ],
             },
         },

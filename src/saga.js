@@ -185,6 +185,7 @@ function* handleRegister({ username, email, password }) {
         token,
         userId
     });
+    navigate('Chat');
 }
 
 function* watchRegister() {
