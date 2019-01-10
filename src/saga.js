@@ -158,7 +158,7 @@ function* handleLogin({ username, password }) {
         body: formData,
     });
     const { status } = response;
-    if(status == 403) {
+    if(status === 403) {
         yield put({
             type: actionType.LOGIN_FAILED,
         });
@@ -187,7 +187,7 @@ function* handleRegister({ username, email, password }) {
         body: formData,
     });
     const { status } = response;
-    if(status == 409) {
+    if(status === 409) {
         yield put({
             type: actionType.REGISTER_FAILED,
         });

@@ -11,7 +11,7 @@ const MessagesView = ({
             messages.map(message => {
                     const type = message.senderId === userId ? "me" : "other";
                     return (
-                        <div className={`Message ${type}`}>
+                        <div className={`Message ${type}`} key={message.id}>
                             <Image src={message.avatar} avatar className="Avatar" />
                             <p className={`MessageText ${type}`}>{message.text}</p>
                         </div>

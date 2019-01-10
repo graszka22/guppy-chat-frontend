@@ -18,7 +18,7 @@ const LoginPageView = ({
     <div className="LoginPage">
     <div className="Content">
     <h1>GuppyChat</h1>
-    <h2>A simple chat that just works (not yet tho :p).</h2>
+    <h2>A simple text chat...</h2>
     <Container className="logincontainer">
       <Segment raised>
       <Grid columns={2} divided>

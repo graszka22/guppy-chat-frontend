@@ -12,7 +12,6 @@ const ChatAreaView = ({
         <Messages friendId={friendId} />
         <div className="MessageInput">
             <TextArea
-                transparent
                 placeholder='Type a message...'
                 autoHeight
                 className="TextArea"
