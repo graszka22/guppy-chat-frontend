@@ -157,6 +157,13 @@ function* handleLogin({ username, password }) {
         method: 'POST',
         body: formData,
     });
+    const { status } = response;
+    if(status == 403) {
+        yield put({
+            type: actionType.LOGIN_FAILED,
+        });
+        return;
+    }
     const { token, userId } = yield response.json();
     yield put({
         type: actionType.LOGIN_SUCCESS,
@@ -179,6 +186,13 @@ function* handleRegister({ username, email, password }) {
         method: 'POST',
         body: formData,
     });
+    const { status } = response;
+    if(status == 409) {
+        yield put({
+            type: actionType.REGISTER_FAILED,
+        });
+        return;
+    }
     const { token, userId } = yield response.json();
     yield put({
         type: actionType.LOGIN_SUCCESS,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Segment, Container, Header, Form } from 'semantic-ui-react';
+import { Grid, Segment, Container, Header, Form, Message } from 'semantic-ui-react';
 import './LoginPage.css';
 
 const LoginPageView = ({
@@ -10,7 +10,10 @@ const LoginPageView = ({
     onRegisterEmailChange,
     onRegisterPasswordChange,
     onRegisterRepeatPasswordChange,
-    onRegisterClick
+    onRegisterClick,
+    loginError,
+    registerError,
+    passwordsDoNotMatch,
 }) => (
     <div className="LoginPage">
     <div className="Content">
@@ -21,8 +24,13 @@ const LoginPageView = ({
       <Grid columns={2} divided>
       <Grid.Row>
       <Grid.Column>
-        <Form>
+        <Form error={loginError}>
           <Header as="h3">Log in</Header>
+          <Message
+            error
+            header='Cannot log in'
+            content='Invalid username or password'
+          />
           <Form.Input placeholder='Username or email...' onChange={onLoginUsernameChange} />
           <Form.Input placeholder='Password...' type='password' onChange={onLoginPasswordChange} />
           <Form.Button
@@ -36,8 +44,13 @@ const LoginPageView = ({
         </Form>
         </Grid.Column>
         <Grid.Column>
-        <Form>
+        <Form error={registerError || passwordsDoNotMatch}>
           <Header as="h3">Register a new account</Header>
+          <Message
+            error
+            header='Cannot register'
+            content={registerError ? 'Probably this username/email is not available' : 'Passwords do not match'}
+          />
           <Form.Input placeholder='Username...' onChange={onRegisterUsernameChange} />
           <Form.Input placeholder='E-mail address...' onChange={onRegisterEmailChange} />
           <Form.Input placeholder='Password...' type='password' onChange={onRegisterPasswordChange} />

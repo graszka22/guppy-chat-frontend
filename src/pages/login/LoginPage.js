@@ -11,6 +11,7 @@ class LoginPage extends Component {
     registerEmail: "",
     registerPassword: "",
     registerRepeatPassword: "",
+    passwordsDoNotMatch: false,
   };
 
   onLoginUsernameChange = (ev, data) => {
@@ -39,8 +40,13 @@ class LoginPage extends Component {
   }
 
   onRegisterClick = () => {
-    const { registerEmail, registerPassword, registerUsername } = this.state;
+    const { registerEmail, registerPassword, registerUsername, registerRepeatPassword } = this.state;
+    if(registerPassword !== registerRepeatPassword) {
+      this.setState({ passwordsDoNotMatch: true });
+      return;
+    }
     this.props.register(registerUsername, registerEmail, registerPassword);
+    this.setState({ passwordsDoNotMatch: false });
   }
 
   render() {
@@ -54,6 +60,8 @@ class LoginPage extends Component {
       onRegisterRepeatPasswordChange,
       onRegisterClick
     } = this;
+    const { loginError, registerError } = this.props;
+    const { passwordsDoNotMatch } = this.state;
     return (
       <LoginPageView
         onLoginUsernameChange={onLoginUsernameChange}
@@ -64,14 +72,22 @@ class LoginPage extends Component {
         onRegisterPasswordChange={onRegisterPasswordChange}
         onRegisterRepeatPasswordChange={onRegisterRepeatPasswordChange}
         onRegisterClick={onRegisterClick}
+        loginError={loginError}
+        registerError={registerError}
+        passwordsDoNotMatch={passwordsDoNotMatch}
       />
     )
   }
 }
+
+const mapStateToProps = state => ({
+  loginError: state.loginError,
+  registerError: state.registerError,
+});
 
 const mapDispatchToProps = dispatch => ({
   login: (login, password) => dispatch(actionCreator.login(login, password)),
   register: (login, email, password) => dispatch(actionCreator.register(login, email, password)),
 });
 
-export default connect(null, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

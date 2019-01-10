@@ -10,8 +10,10 @@ export const actionType = {
     RECEIVE_MESSAGE: "RECEIVE_MESSAGE",
     LOGIN: "LOGIN",
     LOGIN_SUCCESS: "LOGIN_SUCCESS",
+    LOGIN_FAILED: "LOGIN_FAILED",
     REGISTER: "REGISTER",
     REGISTER_SUCESS: "REGISTER_SUCCESS",
+    REGISTER_FAILED: "REGISTER_FAILED",
     FETCH_FRIENDS: "FETCH_FRIENDS",
     FETCH_FRIENDS_SUCCESS: "FETCH_FRIENDS_SUCCESS",
     SEARCH_FRIENDS: "SEARCH_FRIENDS",
@@ -129,6 +131,22 @@ const handlers = {
                 username: action.friendUsername,
             }
         }
+    }),
+    [actionType.LOGIN]: (state) => ({
+        ...state,
+        loginError: null,
+    }),
+    [actionType.LOGIN_FAILED]: (state) => ({
+        ...state,
+        loginError: true,
+    }),
+    [actionType.REGISTER]: (state) => ({
+        ...state,
+        registerError: null,
+    }),
+    [actionType.REGISTER_FAILED]: (state) => ({
+        ...state,
+        registerError: true,
     }),
 };
 
